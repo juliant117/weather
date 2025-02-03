@@ -23,9 +23,7 @@ from accounts import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("accounts.urls")),
-    path("accounts", include("accounts.urls")),
+    path("accounts/", include("accounts.urls")),
+    path("weatherapp/", include("weatherapp.urls")),
 
-    #path('home', include('watherapp.urls'))
-    #path('', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),  # Redirect root URL to login page
-    #path('accounts/', include('accounts.urls')),  # Include your app URLs if you have custom ones
 ]

@@ -13,7 +13,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('weather')  # Redirect to your 'weather' view
+                return redirect('weatherapp:weather')  
 
     else:
 

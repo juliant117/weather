@@ -3,9 +3,9 @@ from django.contrib.auth import urls as auth_urls
 #from django.contrib.auth import views as auth_views
 from. import views
 
-app_name='accounts'
+app_name='weatherapp'
 
 urlpatterns = [
-    path("",views.login_view, name='login'),
+    path("weather/",views.weather_view, name='weather'),
 ]
 
