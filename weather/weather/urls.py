@@ -15,8 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
+#from watherapp import views
+from accounts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", include("accounts.urls")),
+    path("accounts", include("accounts.urls")),
+
+    #path('home', include('watherapp.urls'))
+    #path('', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),  # Redirect root URL to login page
+    #path('accounts/', include('accounts.urls')),  # Include your app URLs if you have custom ones
 ]
