@@ -1,26 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Weather Forecast</title>
-    <link rel="stylesheet" href="https://unpkg.com/chota@0.9.0/dist/chota.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronostico del tiempo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chota/0.7.1/chota.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Weather in {{ city }}</h1>
-
-        {% if forecast %}
-            {% for day in forecast %}
-                <div class="card">
-                    <h2>{{ day.date }}</h2>
-                    <p>Max Temp: {{ day.max_temp }}°C</p>
-                    <p>Min Temp: {{ day.min_temp }}°C</p>
-                    <p>Conditions: {{ day.conditions }}</p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>{{ error_message }}</p>
-        {% endif %}
-
+        <h1>Update Your City</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" value="{{ city }}" required>
+            <button type="submit">Seleccione locaclizacion</button>
+        </form>
     </div>
 </body>
 </html>

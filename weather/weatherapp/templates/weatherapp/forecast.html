@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clima</title>
+    <link rel="stylesheet" href="https://unpkg.com/chota@0.9.0/dist/chota.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Clima en {{ city }}</h1>
+
+        {% if forecast %}
+            {% for day in forecast %}
+                <div class="card">
+                    <h2>{{ day.date }}</h2>
+                    <p>Temperatura Maxima: {{ day.max_temp }}°C</p>
+                    <p>Temperatura Minima: {{ day.min_temp }}°C</p>
+                    <p>Condiciones: {{ day.conditions }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>{{ error_message }}</p>
+        {% endif %}
+
+        <a href="{% url 'weatherapp:home' %}" class="button secondary">Back to Home</a>
+    </div>
+</body>
+</html>

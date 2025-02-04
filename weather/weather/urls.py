@@ -22,8 +22,9 @@ from accounts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("accounts.urls")),
+    #path("", include("accounts.urls")),
     path("accounts/", include("accounts.urls")),
-    path("weatherapp/", include("weatherapp.urls")),
+    #path("weatherapp/", include("weatherapp.urls")),
+    path("", include("weatherapp.urls")),
 
 ]
