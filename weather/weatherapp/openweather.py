@@ -3,18 +3,7 @@ import json
 from datetime import datetime, timedelta
 
 def get_weather_forecast(city, api_key):
-    """
-    Retrieves a 4-day weather forecast from OpenWeatherMap API.
 
-    Args:
-        city (str): The name of the city.
-        api_key (str): Your OpenWeatherMap API key.
-
-    Returns:
-        list: A list of dictionaries, where each dictionary contains the 
-              weather forecast for a single day.  Returns None if there's
-              an error.
-    """
 
     url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=metric"  # Use metric units
     try:
@@ -46,7 +35,7 @@ def get_weather_forecast(city, api_key):
                 'min_temp': min_temp,
                 'conditions': conditions
             })
-        print(forecast_list)
+        #print(forecast_list)
 
         return forecast_list
 

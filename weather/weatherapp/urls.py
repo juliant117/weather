@@ -7,7 +7,7 @@ from. import views
 app_name='weatherapp'
 
 urlpatterns = [
-    path("",views.home, name='home'),
-    path('weatherapp/',views.weather_view, name='weather_view')
+
+    path("",views.weather_view, name='weather_view')
 ]
 

@@ -10,36 +10,48 @@ from django.urls import reverse
 import requests
 
 
-def home(request): 
-    try:
-       
-        user_preference = cm.objects.get()  
-    except cm.DoesNotExist:
-        user_preference = cm.objects.create()  
-
-    if request.method == 'POST':
-        new_city = request.POST.get('city')
-        if new_city:
-            user_preference.city = new_city
-            user_preference.save()
-           
-            return redirect(f"{reverse('weatherapp:weather_view')}?city={new_city}")
-
-    context = {'city': user_preference.city}  
-    return render(request, 'weatherapp/home.html', context)
-
-
 def weather_view(request):
-    city = request.GET.get('city') or request.POST.get('city')
-    if city:
-        api_key= settings.OPENWEATHER_API_KEY
-        forecast = ow.get_weather_forecast(city,api_key)
+    city = request.POST.get('city') or request.GET.get('city') or 'Bogota'
+    forecast = None
+    error_message = None
 
+    if city:
+        api_key = settings.OPENWEATHER_API_KEY
+        forecast = ow.get_weather_forecast(city, api_key)
+
+        # Translate conditions
         if forecast:
-            
-            return render(request, 'weatherapp/forecast.html', {'forecast': forecast, 'city': city})
+            for day in forecast:
+                day['conditions'] = translate_conditions(day['conditions'])
         else:
-            return render(request, 'weatherapp/error.html', {'error_message': "Could not retrieve weather data."})
-    else:
-        return redirect('weatherapp:home')
-    
+            error_message = "No se pudo obtener el pronóstico del clima."
+
+    return render(request, 'weatherapp/unique.html', {
+        'city': city,
+        'forecast': forecast,
+        'error_message': error_message
+    })
+
+def translate_conditions(condition):
+    translations = {
+        "clear sky": "cielo despejado",
+        "few clouds": "pocas nubes",
+        "scattered clouds": "nubes dispersas",
+        "broken clouds": "nubes parciales",
+        "overcast clouds": "nublado",
+        "shower rain": "chubascos",
+        "rain": "lluvia",
+        "thunderstorm": "tormenta",
+        "snow": "nieve",
+        "mist": "niebla",
+        "haze": "bruma",
+        "fog": "neblina",
+        "light rain": "lluvia ligera",
+        "moderate rain": "lluvia moderada",
+        "heavy intensity rain": "lluvia intensa",
+        "drizzle": "llovizna",
+        "dust": "polvo",
+        "smoke": "humo",
+        "sand": "arena",
+    }
+    return translations.get(condition.lower(), condition)

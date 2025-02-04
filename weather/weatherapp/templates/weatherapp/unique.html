@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronóstico del Tiempo</title>
+    <link rel="stylesheet" href="https://unpkg.com/chota@0.9.0/dist/chota.min.css">
+    <style>
+        body {
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .forecast-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns */
+            gap: 15px; /* Space between cards */
+        }
+        .card {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 15px;
+        }
+        @media (max-width: 600px) {
+            .forecast-grid {
+                grid-template-columns: 1fr; /* Stack cards vertically on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌤️ Pronóstico del Tiempo</h1>
+
+        <!-- City Selection Form -->
+        <form method="POST" action="{% url 'weatherapp:weather_view' %}">
+            {% csrf_token %}
+            <label for="city">Ciudad:</label>
+            <input type="text" id="city" name="city" value="{{ city }}" placeholder="Ej: Bogota" required>
+            <button type="submit" class="primary">Ver Clima</button>
+        </form>
+
+        <!-- Weather Forecast -->
+        {% if forecast %}
+            <h2>Clima en {{ city|title }}</h2>
+            <div class="forecast-grid">
+                {% for day in forecast %}
+                    <div class="card">
+                        <h3>{{ day.date }}</h3>
+                        <p><strong>🌡️ Máx:</strong> {{ day.max_temp }}°C</p>
+                        <p><strong>🌡️ Mín:</strong> {{ day.min_temp }}°C</p>
+                        <p><strong>☁️ Condiciones:</strong> {{ day.conditions }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% if error_message %}
+                <p class="is-error">{{ error_message }}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
